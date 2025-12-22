@@ -4,7 +4,7 @@ import config from '../config';
 import { Crontab, CrontabModel, CrontabStatus } from '../data/cron';
 import { exec, execSync } from 'child_process';
 import fs from 'fs/promises';
-import { CronExpressionParser } from 'cron-parser';
+import CronExpressionParser from 'cron-parser';
 import {
   getFileContentByName,
   fileExist,

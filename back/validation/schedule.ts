@@ -1,5 +1,5 @@
 import { Joi } from 'celebrate';
-import { CronExpressionParser } from 'cron-parser';
+import CronExpressionParser from 'cron-parser';
 import { ScheduleType } from '../interface/schedule';
 import path from 'path';
 import config from '../config';

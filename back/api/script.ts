@@ -29,7 +29,7 @@ export default (app: Router) => {
     celebrate({
       query: Joi.object({
         path: Joi.string().optional().allow(''),
-      }),
+      }).unknown(true),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       const logger: Logger = Container.get('logger');
@@ -79,7 +79,7 @@ export default (app: Router) => {
       query: Joi.object({
         path: Joi.string().optional().allow(''),
         file: Joi.string().required(),
-      }),
+      }).unknown(true),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -103,7 +103,7 @@ export default (app: Router) => {
       }),
       query: Joi.object({
         path: Joi.string().optional().allow(''),
-      }),
+      }).unknown(true),
     }),
     async (req: Request, res: Response, next: NextFunction) => {
       try {

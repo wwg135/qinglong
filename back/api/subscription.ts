@@ -3,7 +3,7 @@ import { Container } from 'typedi';
 import { Logger } from 'winston';
 import SubscriptionService from '../services/subscription';
 import { celebrate, Joi } from 'celebrate';
-import { CronExpressionParser } from 'cron-parser';
+import CronExpressionParser from 'cron-parser';
 const route = Router();
 
 export default (app: Router) => {
