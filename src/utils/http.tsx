@@ -84,12 +84,12 @@ let _request = axios.create({
 });
 
 const apiWhiteList = [
-  '/api/user/login',
-  '/open/auth/token',
-  '/api/user/two-factor/login',
-  '/api/system',
-  '/api/user/init',
-  '/api/user/notification/init',
+  `${config.baseUrl}api/user/login`,
+  `${config.baseUrl}open/auth/token`,
+  `${config.baseUrl}api/user/two-factor/login`,
+  `${config.baseUrl}api/system`,
+  `${config.baseUrl}api/user/init`,
+  `${config.baseUrl}api/user/notification/init`,
 ];
 
 _request.interceptors.request.use((_config) => {
