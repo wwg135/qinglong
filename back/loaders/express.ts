@@ -15,6 +15,13 @@ import path from 'path';
 export default ({ app }: { app: Application }) => {
   app.set('trust proxy', 'loopback');
   app.use(cors());
+  
+  // Rewrite URLs to strip baseUrl prefix if configured
+  // This allows the rest of the app to work without baseUrl awareness
+  if (config.baseUrl) {
+    app.use(rewrite(`${config.baseUrl}/*`, '/$1'));
+  }
+  
   app.get(`${config.api.prefix}/env.js`, serveEnv);
   app.use(`${config.api.prefix}/static`, express.static(config.uploadPath));
 
