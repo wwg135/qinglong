@@ -9,15 +9,13 @@ on:
       - "develop"
     tags:
       - "v*"
-  schedule:
-    - cron: "00 20 * * *"
   workflow_dispatch:
 
 jobs:
   code_gitlab:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: Yikun/hub-mirror-action@master
@@ -32,7 +30,7 @@ jobs:
   code_gitee:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: Yikun/hub-mirror-action@master
@@ -47,12 +45,12 @@ jobs:
   build-static:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: "8.3.1"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           cache: "pnpm"
 
@@ -78,12 +76,12 @@ jobs:
           git config --local user.email 'github-actions[bot]@users.noreply.github.com'
           git commit --allow-empty -m "copy static at $(date +'%Y-%m-%d %H:%M:%S')"
           git push --force --quiet "https://${{ secrets.API_TOKEN }}@${GITHUB_REPO}.git" ${GITHUB_BRANCH}:${GITHUB_BRANCH}
-  
+
   static_gitlab:
     needs: build-static
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: Yikun/hub-mirror-action@master
@@ -99,7 +97,7 @@ jobs:
     needs: build-static
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - uses: Yikun/hub-mirror-action@master
@@ -112,6 +110,7 @@ jobs:
           force_update: true
 
   build:
+    if: ${{ !startsWith(github.ref, 'refs/tags/') }}
     needs: build-static
 
     runs-on: ubuntu-22.04
@@ -121,11 +120,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: "8.3.1"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           cache: "pnpm"
 
@@ -209,11 +208,11 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
         with:
           version: "8.3.1"
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           cache: "pnpm"
 
