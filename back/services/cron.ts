@@ -29,7 +29,7 @@ import { logStreamManager } from '../shared/logStreamManager';
 
 @Service()
 export default class CronService {
-  constructor(@Inject('logger') private logger: winston.Logger) {}
+  constructor(@Inject('logger') private logger: winston.Logger) { }
 
   private isNodeCron(cron: Crontab) {
     const { schedule, extra_schedules } = cron;
@@ -165,7 +165,7 @@ export default class CronService {
       let cron;
       try {
         cron = await this.getDb({ id });
-      } catch (err) {}
+      } catch (err) { }
       if (!cron) {
         continue;
       }
@@ -467,7 +467,10 @@ export default class CronService {
     for (const doc of docs) {
       // Kill all running instances of this task
       try {
-        const command = this.makeCommand(doc);
+        if (doc.pid) {
+          await killTask(doc.pid);
+        }
+        const command = doc.command.replace(/\s+/g, ' ').trim();
         await killAllTasks(command);
         this.logger.info(
           `[panel][停止所有运行中的任务实例] 任务ID: ${doc.id}, 命令: ${command}`,
