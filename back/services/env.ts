@@ -13,10 +13,11 @@ import {
   stepPosition,
 } from '../data/env';
 import { writeFileWithLock } from '../shared/utils';
+import { sequelize } from '../data';
 
 @Service()
 export default class EnvService {
-  constructor(@Inject('logger') private logger: winston.Logger) {}
+  constructor(@Inject('logger') private logger: winston.Logger) { }
 
   public async create(payloads: Env[]): Promise<Env[]> {
     const envs = await this.envs();
@@ -146,7 +147,7 @@ export default class EnvService {
     }
     try {
       const result = await this.find(condition, [
-        ['isPinned', 'DESC'],
+        [sequelize.literal('COALESCE(`isPinned`, 0)'), 'DESC'],
         ['position', 'DESC'],
         ['createdAt', 'ASC'],
       ]);
